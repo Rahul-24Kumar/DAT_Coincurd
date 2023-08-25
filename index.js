@@ -3,7 +3,11 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const logger = require("./logger");
+
 const exchangeRoutes = require("./src/routes/exchangeRoutes");
+const mainRoutes = require("./src/routes/pairRoutes/currencyPair");
+
+const currecnyRoutes = require("./src/routes/currencyRoutes/currency");
 
 const app = express();
 
@@ -12,14 +16,16 @@ app.use(bodyParser.json());
 
 app.use(cors());
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 8080;
 
 // const MONGODB_URI = process.env.LOCAL_MONGODB_URI;
 const MONGODB_URI =
   process.env.MONGODB_URI ||
   "mongodb://techAdmin:Siamaq%409@139.59.36.115:26018/ExchangeDB?authMechanism=DEFAULT&authSource=admin";
 
-app.use("/exchanges", exchangeRoutes);
+app.use("/api", exchangeRoutes);
+app.use("/api", mainRoutes);
+app.use("/api", currecnyRoutes);
 
 async function startServer() {
   try {

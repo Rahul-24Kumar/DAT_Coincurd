@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const binanceSchema = new mongoose.Schema(
+const bybitMarket = new mongoose.Schema(
   {
     coinId: {
       type: String,
@@ -15,6 +15,18 @@ const binanceSchema = new mongoose.Schema(
     },
 
     pairName: {
+      type: String,
+    },
+
+    exchangeName: {
+      type: String,
+    },
+
+    exchangeId: {
+      type: String,
+    },
+
+    uniqueExchangeId: {
       type: String,
     },
 
@@ -106,7 +118,6 @@ const binanceSchema = new mongoose.Schema(
       type: String,
     },
 
-
     minBuy: {
       type: String,
     },
@@ -145,8 +156,13 @@ const binanceSchema = new mongoose.Schema(
     time: {
       type: String,
     },
+
+    dbtime: {
+      type: Date,
+      default: Date.now,
+    },
   },
-  { timeStamp: true }
+  { timestamps: true }
 );
 
-module.exports = mongoose.model("binance", binanceSchema);
+module.exports = mongoose.model("bybitMarket", bybitMarket);

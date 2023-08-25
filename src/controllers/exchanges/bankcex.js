@@ -1,26 +1,26 @@
 const axios = require("axios");
 const cron = require("node-cron");
-const logger = require("../../logger");
-const binanceModel = require("../models/binance");
+const logger = require("../../../logger");
+const bankcexModel = require("../../models/exchanges/bankcex");
 
-const BinanceInDb = async (req, res) => {
+const BankcexInDb = async (req, res) => {
   try {
     const response = await axios({
       method: "get",
-      url: "https://www.binance.com/api/v3/ticker/24hr",
+      url: "https://api.bankcex.com/api/v1/ticker/24hr",
     });
 
     if (response && response.data) {
       const result = response.data;
 
-      let binanceApiData = [];
+      let bankCexApiData = [];
 
       result.forEach((element) => {
         if (element.symbol.endsWith("USDT")) {
           const symbolWithoutUSDT = element.symbol.replace("USDT", "");
           const fullPairName = element.symbol;
 
-          binanceApiData.push({
+          bankCexApiData.push({
             symbol: symbolWithoutUSDT,
             pairName: fullPairName,
             price: element.lastPrice,
@@ -48,7 +48,7 @@ const BinanceInDb = async (req, res) => {
         }
       });
 
-      await binanceModel.insertMany(binanceApiData);
+      await bankcexModel.insertMany(bankCexApiData);
     } else {
       logger.error("Invalid API response!");
     }
@@ -58,9 +58,8 @@ const BinanceInDb = async (req, res) => {
 };
 
 cron.schedule("*/30 * * * *", async () => {
-  await BinanceInDb();
+  await BankcexInDb();
   logger.info("Saved");
 });
 
-
-module.exports = { BinanceInDb }
+module.exports = { BankcexInDb };

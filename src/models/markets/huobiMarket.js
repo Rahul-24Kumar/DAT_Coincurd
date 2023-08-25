@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const huobiSchema = new mongoose.Schema(
+const huobiMarket = new mongoose.Schema(
   {
     coinId: {
       type: String,
@@ -18,112 +18,120 @@ const huobiSchema = new mongoose.Schema(
       type: String,
     },
 
+    exchangeName: {
+      type: String,
+    },
+
+    exchangeId: {
+      type: String,
+    },
+
+    uniqueExchangeId: {
+      type: String,
+    },
+
     volume: {
-      type: Number,
+      type: String,
     },
 
     baseVolume: {
-      type: Number,
+      type: String,
     },
 
     quoteVolume: {
-      type: Number,
+      type: String,
     },
 
     lastPrice: {
-      type: Number,
+      type: String,
     },
 
     prevClosePrice: {
-      type: Number,
+      type: String,
     },
 
     lastPrice1h: {
-      type: Number,
+      type: String,
     },
 
     highPrice: {
-      type: Number,
+      type: String,
     },
 
     lowPrice: {
-      type: Number,
+      type: String,
     },
 
     price: {
-      type: Number,
+      type: String,
     },
 
     openPrice: {
-      type: Number,
+      type: String,
     },
 
     askPrice: {
-      type: Number,
+      type: String,
     },
 
     baseCurrency: {
-      type: Number,
+      type: String,
     },
 
     quoteCurrency: {
-      type: Number,
+      type: String,
     },
 
     askQty: {
-      type: Number,
+      type: String,
     },
 
     lastQty: {
-      type: Number,
+      type: String,
+    },
+
+    bidQty: {
+      type: String,
     },
 
     amount: {
-      type: Number,
+      type: String,
     },
 
     bidPrice: {
-      type: Number,
+      type: String,
     },
 
     priceChange: {
-      type: Number,
+      type: String,
     },
 
     priceChangePercent: {
-      type: Number,
+      type: String,
     },
 
     weightedAvgPrice: {
-      type: Number,
-    },
-
-    openTime: {
-      type: Number,
-    },
-
-    closeTime: {
-      type: Number,
+      type: String,
     },
 
     change1h: {
-      type: Number,
+      type: String,
     },
 
     minBuy: {
-      type: Number,
+      type: String,
     },
 
     minSell: {
-      type: Number,
+      type: String,
     },
 
     sellFee: {
-      type: Number,
+      type: String,
     },
 
     buyFee: {
-      type: Number,
+      type: String,
     },
 
     firstId: {
@@ -134,15 +142,27 @@ const huobiSchema = new mongoose.Schema(
       type: Number,
     },
 
-    tradeCount: {
+    count: {
+      type: Number,
+    },
+    openTime: {
+      type: Number,
+    },
+
+    closeTime: {
       type: Number,
     },
 
     time: {
-      type: Number,
+      type: String,
+    },
+
+    dbtime: {
+      type: Date,
+      default: Date.now,
     },
   },
-  { timeStamp: true }
+  { timestamps: true }
 );
 
-module.exports = mongoose.model("huobi", huobiSchema);
+module.exports = mongoose.model("huobiMarket", huobiMarket);

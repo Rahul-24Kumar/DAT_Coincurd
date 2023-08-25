@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const okxSchema = new mongoose.Schema(
+const kucoinMarket = new mongoose.Schema(
   {
     coinId: {
       type: String,
@@ -15,6 +15,18 @@ const okxSchema = new mongoose.Schema(
     },
 
     pairName: {
+      type: String,
+    },
+
+    exchangeName: {
+      type: String,
+    },
+
+    exchangeId: {
+      type: String,
+    },
+
+    uniqueExchangeId: {
       type: String,
     },
 
@@ -78,6 +90,10 @@ const okxSchema = new mongoose.Schema(
       type: String,
     },
 
+    bidQty: {
+      type: String,
+    },
+
     amount: {
       type: String,
     },
@@ -119,29 +135,35 @@ const okxSchema = new mongoose.Schema(
     },
 
     firstId: {
-      type: String,
+      type: Number,
     },
 
     lastId: {
-      type: String,
+      type: Number,
     },
 
     count: {
-      type: String,
+      type: Number,
     },
+    
     openTime: {
-      type: String,
+      type: Number,
     },
 
     closeTime: {
-      type: String,
+      type: Number,
     },
 
     time: {
       type: String,
     },
+
+    dbtime: {
+      type: Date,
+      default: Date.now,
+    },
   },
-  { timeStamp: true }
+  { timestamps: true }
 );
 
-module.exports = mongoose.model("okx", okxSchema);
+module.exports = mongoose.model("kucoinMarket", kucoinMarket);

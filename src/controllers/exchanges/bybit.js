@@ -1,7 +1,7 @@
 const axios = require("axios");
 const cron = require("node-cron");
-const logger = require("../../logger");
-const bybitModel = require("../models/bybit");
+const logger = require("../../../logger");
+const bybitModel = require("../../models/exchanges/bybit");
 
 const BybitInDb = async (req, res) => {
   try {
@@ -34,6 +34,10 @@ const BybitInDb = async (req, res) => {
             lastPrice1h: element.prev_price_1h,
             volume: element.volume_24h,
             change1h: element.price_1h_pcnt,
+
+            exchangeId: "bybit",
+            exchangeName: "Bybit",
+            uniqueExchangeId: "bybit_2",
           });
         }
       });

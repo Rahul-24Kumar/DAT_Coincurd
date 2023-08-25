@@ -1,7 +1,7 @@
 const axios = require("axios");
 const cron = require("node-cron");
-const logger = require("../../logger");
-const okxModel = require("../models/okx");
+const logger = require("../../../logger");
+const okxModel = require("../../models/exchanges/okx");
 
 const OkxInDb = async (req, res) => {
   try {
@@ -38,6 +38,9 @@ const OkxInDb = async (req, res) => {
             lastPrice: element.last,
             volume: element.vol24h,
             time: element.ts,
+            exchangeId: "okx",
+            exchangeName: "Okx",
+            uniqueExchangeId: "okx_6",
           });
         }
       });
