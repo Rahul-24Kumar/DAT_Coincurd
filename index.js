@@ -9,6 +9,8 @@ const mainRoutes = require("./src/routes/pairRoutes/currencyPair");
 
 const currecnyRoutes = require("./src/routes/currencyRoutes/currency");
 
+const marketRoutes = require("./src/routes/market/allMarket.js");
+
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -16,7 +18,7 @@ app.use(bodyParser.json());
 
 app.use(cors());
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 5001;
 
 // const MONGODB_URI = process.env.LOCAL_MONGODB_URI;
 const MONGODB_URI =
@@ -26,6 +28,7 @@ const MONGODB_URI =
 app.use("/api", exchangeRoutes);
 app.use("/api", mainRoutes);
 app.use("/api", currecnyRoutes);
+app.use("/api", marketRoutes);
 
 async function startServer() {
   try {
