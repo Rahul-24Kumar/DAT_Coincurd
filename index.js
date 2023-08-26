@@ -25,10 +25,10 @@ const MONGODB_URI =
   process.env.MONGODB_URI ||
   "mongodb://techAdmin:Siamaq%409@139.59.36.115:26018/ExchangeDB?authMechanism=DEFAULT&authSource=admin";
 
-app.use("/api", exchangeRoutes);
-app.use("/api", mainRoutes);
-app.use("/api", currecnyRoutes);
-app.use("/api", marketRoutes);
+app.use("/exchange", exchangeRoutes);
+app.use("/exchange", mainRoutes);
+app.use("/exchange", currecnyRoutes);
+app.use("/exchange", marketRoutes);
 
 async function startServer() {
   try {

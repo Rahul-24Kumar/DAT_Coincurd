@@ -13,8 +13,6 @@ const BitstampInDb = async (req, res) => {
     if (response && response.data) {
       const result = response.data;
 
-    
-
       let bitstampApiData = [];
 
       result.forEach((element) => {
@@ -49,7 +47,7 @@ const BitstampInDb = async (req, res) => {
   }
 };
 
-cron.schedule("*/10 * * * *", async () => {
+cron.schedule("*/30 * * * *", async () => {
   await BitstampInDb();
   logger.info("Bitstamp Saved");
 });

@@ -13,8 +13,6 @@ const BitstampMarketInDb = async (req, res) => {
     if (response && response.data) {
       const result = response.data;
 
-    
-
       let bitstampApiData = [];
 
       result.forEach((element) => {

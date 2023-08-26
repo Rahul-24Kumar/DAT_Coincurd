@@ -1,5 +1,10 @@
 const router = require("express").Router();
 
+const {
+  getCryptoMarket,
+  getExchangeMarket,
+} = require("../../controllers/markets/viewMarket");
+
 const marketControllers = [
   {
     name: "huobiMarket",
@@ -34,5 +39,10 @@ const marketControllers = [
 marketControllers.forEach(({ name, controller }) => {
   router.post(`/${name}`, controller);
 });
+
+router.get("/viewCrypto/market/:symbol", getCryptoMarket);
+
+
+router.get("/viewExchange/market/:exchangeId", getExchangeMarket);
 
 module.exports = router;
