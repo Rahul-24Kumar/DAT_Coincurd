@@ -84,7 +84,7 @@ const OkxPairDb = async (req, res) => {
 
           updatedData.pairName = symbol;
 
-          updatedData.priceUsd = parseFloat(responseData.idxPx);
+          updatedData.price = parseFloat(responseData.idxPx);
           updatedData.lowPrice = parseFloat(responseData.low24h);
           updatedData.highPrice = parseFloat(responseData.high24h);
           updatedData.openPrice = parseFloat(responseData.open24h);

@@ -18,12 +18,10 @@ const bankCexSchema = new mongoose.Schema(
       type: String,
     },
 
-
     exchangeName: {
       type: String,
     },
 
-    
     exchangeId: {
       type: String,
     },
@@ -77,11 +75,11 @@ const bankCexSchema = new mongoose.Schema(
     },
 
     baseCurrency: {
-      type: Number,
+      type: String,
     },
 
     quoteCurrency: {
-      type: Number,
+      type: String,
     },
 
     askQty: {

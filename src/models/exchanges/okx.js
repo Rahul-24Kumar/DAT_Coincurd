@@ -33,47 +33,47 @@ const okxSchema = new mongoose.Schema(
     },
 
     volume: {
-      type: String,
+      type: Number,
     },
 
     baseVolume: {
-      type: String,
+      type: Number,
     },
 
     quoteVolume: {
-      type: String,
+      type: Number,
     },
 
     lastPrice: {
-      type: String,
+      type: Number,
     },
 
     prevClosePrice: {
-      type: String,
+      type: Number,
     },
 
     lastPrice1h: {
-      type: String,
+      type: Number,
     },
 
     highPrice: {
-      type: String,
+      type: Number,
     },
 
     lowPrice: {
-      type: String,
+      type: Number,
     },
 
     price: {
-      type: String,
+      type: Number,
     },
 
     openPrice: {
-      type: String,
+      type: Number,
     },
 
     askPrice: {
-      type: String,
+      type: Number,
     },
 
     baseCurrency: {
@@ -85,35 +85,35 @@ const okxSchema = new mongoose.Schema(
     },
 
     askQty: {
-      type: String,
+      type: Number,
     },
 
     lastQty: {
-      type: String,
+      type: Number,
     },
 
     amount: {
-      type: String,
+      type: Number,
     },
 
     bidPrice: {
-      type: String,
+      type: Number,
     },
 
     priceChange: {
-      type: String,
+      type: Number,
     },
 
     priceChangePercent: {
-      type: String,
+      type: Number,
     },
 
     weightedAvgPrice: {
-      type: String,
+      type: Number,
     },
 
     change1h: {
-      type: String,
+      type: Number,
     },
 
     minBuy: {

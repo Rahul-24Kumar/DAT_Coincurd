@@ -85,10 +85,10 @@ const poloniexPairDb = async (req, res) => {
           updatedData.pairName = symbol;
 
           updatedData.openPrice = parseFloat(responseData.open);
-          updatedData.priceUsd = parseFloat(responseData.close);
+          updatedData.price = parseFloat(responseData.close);
           updatedData.lowPrice = parseFloat(responseData.low);
           updatedData.highPrice = parseFloat(responseData.high);
-          updatedData.volumeUsd24Hr = parseFloat(responseData.quantity);
+          updatedData.volume = parseFloat(responseData.quantity);
           updatedData.amount = parseFloat(responseData.amount);
 
           updatedData.tradeCount = parseFloat(responseData.tradeCount);

@@ -23,17 +23,22 @@ const BitstampInDb = async (req, res) => {
           bitstampApiData.push({
             symbol: symbolWithoutUSDT,
             pairName: fullPairName,
+
+            price: parseFloat(element.last),
+            weightedAvgPrice: parseFloat(element.vwap),
+            priceChangePercent: parseFloat(element.percent_change_24),
+            bidPrice: parseFloat(element.bid),
+            askPrice: parseFloat(element.ask),
+            openPrice: parseFloat(element.open),
+            highPrice: parseFloat(element.high),
+            lowPrice: parseFloat(element.low),
+            lastPrice: parseFloat(element.last),
+            volume: parseFloat(element.volume),
+            
+
+            exchangeId: "bitstamp",
+            exchangeName: "Bitstamp",
             uniqueExchangeId: "bitstamp_8",
-            price: element.last,
-            weightedAvgPrice: element.vwap,
-            priceChangePercent: element.percent_change_24,
-            bidPrice: element.bid,
-            askPrice: element.ask,
-            openPrice: element.open,
-            highPrice: element.high,
-            lowPrice: element.low,
-            lastPrice: element.last,
-            volume: element.volume,
           });
         }
       });

@@ -7,7 +7,7 @@ const exchangeData = [
     exchangeName: "Binance",
     uniqueExchangeId: "binance_1",
     percentTotalVolume: "48.462058420265617262",
-    volumeUsd: "4330040379.6483578831795349",
+    volume: "4330040379.6483578831795349",
     tradingPairs: "828",
     exchangeUrl: "https://www.binance.com/",
     country: "Cayman Islands",
@@ -42,7 +42,7 @@ const exchangeData = [
     exchangeName: "Huobi",
     uniqueExchangeId: "huobi_4",
     percentTotalVolume: "5.562057304204931763",
-    volumeUsd: "504588176.0447381297196166",
+    volume: "504588176.0447381297196166",
     tradingPairs: "228",
     exchangeUrl: "https://www.hbg.com/",
     country: "Seychelles",
@@ -54,7 +54,7 @@ const exchangeData = [
     exchangeId: "kucoin",
     exchangeName: "Kucoin",
     percentTotalVolume: "1.926628210141964726",
-    volumeUsd: "174972439.0943541844626706",
+    volume: "174972439.0943541844626706",
     tradingPairs: "652",
     exchangeUrl: "https://www.kucoin.io/",
     country: "Seychelles",
@@ -77,7 +77,7 @@ const exchangeData = [
     exchangeName: "Dextrade",
     uniqueExchangeId: "dextrade_7",
     percentTotalVolume: "0.392663384457190133",
-    volumeUsd: "34426990.2815215323094857",
+    volume: "34426990.2815215323094857",
     tradingPairs: "103",
     exchangeUrl: "https://dex-trade.com/",
   },
@@ -88,7 +88,7 @@ const exchangeData = [
     exchangeName: "Bitstamp",
     uniqueExchangeId: "bitstamp_8",
     percentTotalVolume: "1.359354520604433387",
-    volumeUsd: "123222720.8484107837269276",
+    volume: "123222720.8484107837269276",
     tradingPairs: "98",
     exchangeUrl: "https://www.bitstamp.net/",
     country: "Luxembourg",
@@ -99,6 +99,16 @@ const exchangeData = [
 const insertExchanges = async (req, res) => {
   try {
     const insertInDb = await exchangeModel.insertMany(exchangeData);
+
+    return res.status(201).send({ message: "successful", data: insertInDb });
+  } catch (error) {
+    return res.status(500).send({ message: error.message });
+  }
+};
+
+const addNewExchanges = async (req, res) => {
+  try {
+    const insertInDb = await exchangeModel.create({ ...req.body });
 
     return res.status(201).send({ message: "successful", data: insertInDb });
   } catch (error) {
@@ -144,4 +154,4 @@ const getAllExchanges = async (req, res) => {
   }
 };
 
-module.exports = { insertExchanges, getAllExchanges, UpdateExchanges };
+module.exports = { insertExchanges, addNewExchanges, getAllExchanges, UpdateExchanges };

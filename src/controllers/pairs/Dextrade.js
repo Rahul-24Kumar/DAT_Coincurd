@@ -85,10 +85,10 @@ const DextradePairDb = async (req, res) => {
           updatedData.pairName = symbol;
 
           updatedData.dextradeId = parseFloat(responseData.id);
-          updatedData.priceUsd = parseFloat(responseData.last);
+          updatedData.price = parseFloat(responseData.last);
           updatedData.lowPrice = parseFloat(responseData.low);
           updatedData.highPrice = parseFloat(responseData.high);
-          updatedData.volumeUsd24Hr = parseFloat(responseData.volume_24H);
+          updatedData.volume = parseFloat(responseData.volume_24H);
           updatedData.min_trade = parseFloat(responseData.min_trade);
 
           updatedData.apiLink = `https://api.dex-trade.com/v1/public/ticker?pair=${symbol}`;

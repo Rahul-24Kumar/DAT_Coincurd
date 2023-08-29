@@ -87,10 +87,10 @@ const bitstampPairDb = async (req, res) => {
           updatedData.pairName = symbol;
 
           updatedData.openPrice = parseFloat(responseData.open);
-          updatedData.priceUsd = parseFloat(responseData.last);
+          updatedData.price = parseFloat(responseData.last);
           updatedData.lowPrice = parseFloat(responseData.low);
           updatedData.highPrice = parseFloat(responseData.high);
-          updatedData.volumeUsd24Hr = parseFloat(responseData.volume);
+          updatedData.volume = parseFloat(responseData.volume);
 
           updatedData.changePercent24Hr = parseFloat(
             responseData.percent_change_24

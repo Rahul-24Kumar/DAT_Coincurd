@@ -26,17 +26,22 @@ const OkxInDb = async (req, res) => {
           okxApiData.push({
             symbol: symbolWithoutUSDT,
             pairName: pairName,
-            price: element.last,
-            lastQty: element.lastQty,
-            bidPrice: element.bidPx,
+
             bidQty: element.bidQty,
-            askPrice: element.askPx,
             askQty: element.askQty,
-            openPrice: element.open24h,
-            highPrice: element.high24h,
-            lowPrice: element.low24h,
-            lastPrice: element.last,
-            volume: element.vol24h,
+
+            price: parseFloat(element.last),
+            lastQty: parseFloat(element.lastQty),
+            bidPrice: parseFloat(element.bidPx),
+
+            askPrice: parseFloat(element.askPx),
+
+            openPrice: parseFloat(element.open24h),
+            highPrice: parseFloat(element.high24h),
+            lowPrice: parseFloat(element.low24h),
+            lastPrice: parseFloat(element.last),
+            volume: parseFloat(element.vol24h),
+
             time: element.ts,
             exchangeId: "okx",
             exchangeName: "Okx",

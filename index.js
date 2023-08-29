@@ -5,22 +5,37 @@ const bodyParser = require("body-parser");
 const logger = require("./logger");
 
 const exchangeRoutes = require("./src/routes/exchangeRoutes");
+
+const marketRoutes = require("./src/routes/market/allMarket.js");
+
 const mainRoutes = require("./src/routes/pairRoutes/currencyPair");
 
 const currecnyRoutes = require("./src/routes/currencyRoutes/currency");
-
-const marketRoutes = require("./src/routes/market/allMarket.js");
 
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "/.coincurd.com$/",
+      "https://coincurd.com",
+      "https://user.coincurd.com",
+      "https://admin.coincurd.com",
+      "https://backenduser.coincurd.com",
+      "https://beta.coincurd.com",
+      "http://localhost:3000",
+      "http://localhost:3001",
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true, // Enable sending cookies from the client
+  })
+);
 
 const port = process.env.PORT || 5001;
 
-// const MONGODB_URI = process.env.LOCAL_MONGODB_URI;
 const MONGODB_URI =
   process.env.MONGODB_URI ||
   "mongodb://techAdmin:Siamaq%409@139.59.36.115:26018/ExchangeDB?authMechanism=DEFAULT&authSource=admin";

@@ -26,15 +26,15 @@ const Currency = new mongoose.Schema(
       type: String,
     },
 
-    priceUsd: {
+    price: {
       type: Number,
     },
 
-    marketCapUsd: {
+    marketCap: {
       type: Number,
     },
 
-    volumeUsd24Hr: {
+    volume: {
       type: Number,
     },
 
@@ -43,15 +43,15 @@ const Currency = new mongoose.Schema(
     },
 
     maxSupply: {
-      type: String,
+      type: Number,
     },
 
     totalSupply: {
-      type: String,
+      type: Number,
     },
 
     circulatingSupply: {
-      type: String,
+      type: Number,
     },
 
     issueDate: {

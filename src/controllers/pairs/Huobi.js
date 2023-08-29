@@ -87,10 +87,10 @@ const HuobiPairDb = async (req, res) => {
           updatedData.pairName = symbol;
 
           updatedData.huobiId = parseFloat(responseData.id);
-          updatedData.priceUsd = parseFloat(responseData.close);
+          updatedData.price = parseFloat(responseData.close);
           updatedData.lowPrice = parseFloat(responseData.low);
           updatedData.highPrice = parseFloat(responseData.high);
-          updatedData.volumeUsd24Hr = parseFloat(responseData.vol);
+          updatedData.volume = parseFloat(responseData.vol);
           updatedData.tradeCount = parseFloat(responseData.count);
 
           updatedData.apiLink = `https://api.huobi.pro/market/detail?symbol=${symbol.toLowerCase()}`;

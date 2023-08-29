@@ -13,6 +13,7 @@ const { BinanceInDb } = require("../controllers/exchanges/binance");
 const { BitstampInDb } = require("../controllers/exchanges/bitstamp");
 
 const {
+  addNewExchanges,
   insertExchanges,
   getAllExchanges,
   UpdateExchanges,
@@ -33,6 +34,8 @@ router.post("/insert/binance", BinanceInDb);
 router.post("/insert/bitstamp", BitstampInDb);
 
 router.post("/insert/exchanges", insertExchanges);
+
+router.post("/addNew/exchanges", addNewExchanges);
 
 router.get("/view/allExchanges", getAllExchanges);
 

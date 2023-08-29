@@ -83,12 +83,12 @@ const bybitPairDb = async (req, res) => {
           const updatedData = bybitData[matchingDataIndex];
 
           updatedData.pairName = symbol;
-          updatedData.priceUsd = parseFloat(responseData.lp);
+          updatedData.price = parseFloat(responseData.lp);
 
           updatedData.highPrice = parseFloat(responseData.h);
           updatedData.lowPrice = parseFloat(responseData.l);
 
-          updatedData.volumeUsd24Hr = parseFloat(responseData.v);
+          updatedData.volume = parseFloat(responseData.v);
           updatedData.time = parseFloat(responseData.t);
           updatedData.quoteVolume = parseFloat(responseData.qv);
 

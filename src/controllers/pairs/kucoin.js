@@ -83,7 +83,7 @@ const kucoinPairDb = async (req, res) => {
           const updatedData = kucoinData[matchingDataIndex];
 
           updatedData.pairName = symbol;
-          updatedData.priceUsd = parseFloat(responseData.last);
+          updatedData.price = parseFloat(responseData.last);
           updatedData.priceChange = parseFloat(responseData.changePrice);
           updatedData.changePercent24Hr = parseFloat(responseData.changeRate);
           updatedData.weightedAvgPrice = parseFloat(responseData.averagePrice);
@@ -91,7 +91,7 @@ const kucoinPairDb = async (req, res) => {
           updatedData.highPrice = parseFloat(responseData.high);
           updatedData.lowPrice = parseFloat(responseData.low);
 
-          updatedData.volumeUsd24Hr = parseFloat(responseData.vol);
+          updatedData.volume = parseFloat(responseData.vol);
 
           updatedData.time = parseFloat(responseData.time);
 

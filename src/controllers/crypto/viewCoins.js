@@ -12,6 +12,7 @@ const currencyData = [
     circulatingSupply: 19460625,
     maxSupply: 21000000,
   },
+
   {
     coinId: "ethereum",
     rank: 2,
@@ -21,6 +22,7 @@ const currencyData = [
     uniqueExchangeId: "binance_1",
     circulatingSupply: 120131756.16935974,
   },
+
   {
     coinId: "binance-coin",
     rank: 3,
@@ -31,6 +33,7 @@ const currencyData = [
     circulatingSupply: 166801148,
     maxSupply: 166801148,
   },
+
   {
     coinId: "solana",
     rank: 4,
@@ -44,6 +47,7 @@ const currencyData = [
   {
     coinId: "polkadot",
     rank: 5,
+    coinName: "Polkadot",
     symbol: "DOT",
     uniqueCoinId: "DOT_5",
     uniqueExchangeId: "binance_1",
@@ -77,7 +81,12 @@ const insertCurency = async (req, res) => {
 
 const listCurrencyAdmin = async (req, res) => {
   try {
-    const insertInDb = await currencyModel.create({ ...req.body });
+    const { price, circulatingSupply } = req.body;
+
+    const insertInDb = await currencyModel.create({
+      ...req.body,
+      marketCap: parseFloat(price) * parseFloat(circulatingSupply),
+    });
 
     return res.status(201).send({ message: "successful", data: insertInDb });
   } catch (error) {

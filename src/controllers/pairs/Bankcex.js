@@ -84,7 +84,7 @@ const BankcexPairDb = async (req, res) => {
           const updatedData = bankcexData[matchingDataIndex];
 
           updatedData.pairName = symbol;
-          updatedData.priceUsd = responseData.last;
+          updatedData.price = responseData.last;
           updatedData.lowsetAsk = responseData.lowsetAsk;
           updatedData.highestBid = responseData.highestBid;
           updatedData.priceChangePercent = responseData.percentChange;

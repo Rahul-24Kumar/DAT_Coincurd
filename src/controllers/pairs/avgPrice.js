@@ -1,7 +1,62 @@
-const logger = require("../../../logger");
 const cron = require("node-cron");
+const logger = require("../../../logger");
 const currencyModel = require("../../models/currency/cryptocurrency");
 const currencyPairs = require("../../models/pairModel/currencyPairs");
+
+const updateAutomatically = async () => {
+  try {
+    const getAllPairs = await currencyPairs.find();
+
+    const coinIdDataMap = new Map();
+
+    for (const entry of getAllPairs) {
+      const price = parseFloat(entry.price);
+      const volume = parseFloat(entry.volume);
+
+      if (!isNaN(price) && !isNaN(volume)) {
+        if (!coinIdDataMap.has(entry.uniqueCoinId)) {
+          coinIdDataMap.set(entry.uniqueCoinId, {
+            totalPrice: 0,
+            totalVolume: 0,
+            validEntryCount: 0,
+          });
+        }
+
+        const coinData = coinIdDataMap.get(entry.uniqueCoinId);
+        coinData.totalPrice += price;
+        coinData.totalVolume += volume;
+        coinData.validEntryCount++;
+      }
+    }
+
+    const updatedCurrencies = [];
+
+    for (const [uniqueCoinId, coinData] of coinIdDataMap.entries()) {
+      const averagePrice = coinData.totalPrice / coinData.validEntryCount;
+      const marketCap = averagePrice * getAllPairs[0].circulatingSupply;
+
+      const updateCurrency = await currencyModel.findOneAndUpdate(
+        { uniqueCoinId },
+        {
+          $set: {
+            price: averagePrice,
+            volume: coinData.totalVolume,
+            marketCap: marketCap,
+          },
+        },
+        { upsert: true, new: true }
+      );
+
+      updatedCurrencies.push(updateCurrency);
+    }
+  } catch (error) {
+    logger.error(error.message);
+  }
+};
+
+cron.schedule("*/1 * * * *", async () => {
+  await updateAutomatically();
+});
 
 const addNewPair = async (req, res) => {
   try {
@@ -35,52 +90,12 @@ const getAllPairs = async (req, res) => {
         .json({ message: "Data not found for the given uniqueCoinId." });
     }
 
-    let totalPrice = 0;
-    let totalVolume = 0;
-    let validEntryCount = 0;
-
-    for (const entry of getAvgData) {
-      if (
-        typeof entry.priceUsd === "number" &&
-        !isNaN(entry.priceUsd) &&
-        typeof entry.volumeUsd24Hr === "number" &&
-        !isNaN(entry.volumeUsd24Hr)
-      ) {
-        totalPrice += entry.priceUsd;
-        totalVolume += entry.volumeUsd24Hr;
-        validEntryCount++;
-      }
-    }
-
-    logger.info(totalVolume);
-
-    let averagePrice = 0;
-    if (validEntryCount > 0) {
-      averagePrice = totalPrice / validEntryCount;
-    }
-
-    const updateCurrency = await currencyModel.findOneAndUpdate(
-      {
-        uniqueCoinId,
-      },
-      { $set: { priceUsd: averagePrice, volumeUsd24Hr: totalVolume } },
-      { upsert: true, new: true }
-    );
-
-    // logger.info(updateCurrency);
-    // return res.json({ averagePrice, totalVolume, validEntryCount });
-
     return res.status(200).send({ message: "sucessful", data: getAvgData });
   } catch (error) {
     logger.error(error.message);
     return res.status(500).json({ message: "Internal server error." });
   }
 };
-
-// cron.schedule("*/5 * * * *", async () => {
-//   await getAllPairs();
-//   logger.info("updated");
-// });
 
 const getAllExchangesCrypto = async (req, res) => {
   try {

@@ -77,11 +77,11 @@ const huobiSchema = new mongoose.Schema(
     },
 
     baseCurrency: {
-      type: Number,
+      type: String,
     },
 
     quoteCurrency: {
-      type: Number,
+      type: String,
     },
 
     askQty: {

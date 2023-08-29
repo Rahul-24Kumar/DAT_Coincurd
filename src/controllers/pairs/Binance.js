@@ -83,7 +83,7 @@ const BinancePairDb = async (req, res) => {
           const updatedData = BinanceData[matchingDataIndex];
 
           updatedData.pairName = symbol;
-          updatedData.priceUsd = parseFloat(responseData.lastPrice);
+          updatedData.price = parseFloat(responseData.lastPrice);
           updatedData.priceChange = parseFloat(responseData.priceChange);
           updatedData.changePercent24Hr = parseFloat(
             responseData.priceChangePercent
@@ -104,7 +104,7 @@ const BinancePairDb = async (req, res) => {
           updatedData.lowPrice = parseFloat(responseData.lowPrice);
           updatedData.quoteVolume = parseFloat(responseData.quoteVolume);
 
-          updatedData.volumeUsd24Hr = parseFloat(responseData.volume);
+          updatedData.volume = parseFloat(responseData.volume);
           updatedData.openTime = parseFloat(responseData.openTime);
           updatedData.closeTime = parseFloat(responseData.closeTime);
           updatedData.firstId = parseFloat(responseData.firstId);

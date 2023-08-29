@@ -30,7 +30,7 @@ const pairCurrency = new mongoose.Schema(
       type: String,
     },
 
-    priceUsd: {
+    price: {
       type: Number,
     },
 
@@ -75,11 +75,11 @@ const pairCurrency = new mongoose.Schema(
     },
 
     baseCurrency: {
-      type: Number,
+      type: String,
     },
 
     quoteCurrency: {
-      type: Number,
+      type: String,
     },
 
     askQty: {
@@ -106,11 +106,11 @@ const pairCurrency = new mongoose.Schema(
       type: String,
     },
 
-    marketCapUsd: {
+    marketCap: {
       type: Number,
     },
 
-    volumeUsd24Hr: {
+    volume: {
       type: Number,
     },
 

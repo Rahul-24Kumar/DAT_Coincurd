@@ -22,21 +22,21 @@ const PoloniexMarketInDb = async (req, res) => {
         poloniexApiData.push({
           symbol: symbolWithoutUSDT,
           pairName: fullPairName,
-          price: element.close,
+          price: parseFloat(element.close),
 
-          priceChangePercent: element.dailyChange,
+          priceChangePercent: parseFloat(element.dailyChange),
 
-          bidPrice: element.bid,
-          bidQty: element.bidQuantity,
-          askPrice: element.ask,
-          askQty: element.askQuantity,
-          openPrice: element.open,
-          highPrice: element.high,
-          lowPrice: element.low,
+          bidPrice: parseFloat(element.bid),
+          bidQty: parseFloat(element.bidQuantity),
+          askPrice: parseFloat(element.ask),
+          askQty: parseFloat(element.askQuantity),
+          openPrice: parseFloat(element.open),
+          highPrice: parseFloat(element.high),
+          lowPrice: parseFloat(element.low),
 
-          volume: element.volume,
-          quoteVolume: element.quoteVolume,
-          tradeCount: element.tradeCount,
+          volume: parseFloat(element.volume),
+          quoteVolume: parseFloat(element.quoteVolume),
+          tradeCount: parseFloat(element.tradeCount),
 
           openTime: element.startTime,
           closeTime: element.closeTime,

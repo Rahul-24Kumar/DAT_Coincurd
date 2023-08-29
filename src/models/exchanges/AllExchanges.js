@@ -19,16 +19,16 @@ let exchange = new mongoose.Schema(
     },
 
     percentTotalVolume: {
-      type: String,
+      type: Number,
       default: 0,
     },
 
-    volumeUsd: {
-      type: String,
+    volume: {
+      type: Number,
     },
 
     tradingPairs: {
-      type: String,
+      type: Number,
       default: 0,
     },
 
