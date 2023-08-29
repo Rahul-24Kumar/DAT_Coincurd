@@ -48,6 +48,7 @@ const BinancePairDb = async (req, res) => {
         coinId: "polkadot",
         rank: 5,
         symbol: "DOT",
+        coinName: "Polkadot",
         uniqueCoinId: "DOT_5",
         uniqueExchangeId: "binance_1",
         circulatingSupply: 1265884143.59824,

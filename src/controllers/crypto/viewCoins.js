@@ -81,16 +81,28 @@ const insertCurency = async (req, res) => {
 
 const listCurrencyAdmin = async (req, res) => {
   try {
-    const { price, circulatingSupply } = req.body;
+    const { price, circulatingSupply, symbol } = req.body;
+
+    const getAllCoins = await currencyModel.find();
+    
+    const getAllCoinsLength = getAllCoins.length;
+
+    const newRank = getAllCoinsLength + 1;
+
+    const uniqueCoinId = symbol + "_" + newRank;
+
+    const marketCap = parseFloat(price) * parseFloat(circulatingSupply);
 
     const insertInDb = await currencyModel.create({
       ...req.body,
-      marketCap: parseFloat(price) * parseFloat(circulatingSupply),
+      rank: newRank,
+      marketCap: marketCap,
+      uniqueCoinId: uniqueCoinId,
     });
 
-    return res.status(201).send({ message: "successful", data: insertInDb });
+    return res.status(201).json({ message: "Successful", data: insertInDb });
   } catch (error) {
-    return res.status(500).send({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
 
