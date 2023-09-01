@@ -39,8 +39,8 @@ router.post("/addNew/exchanges", addNewExchanges);
 
 router.get("/view/allExchanges", getAllExchanges);
 
-router.put("/update/exchange/:uniqueExchagneId", UpdateExchanges);
-
 router.get("/crypto/:uniqueExchangeId", getAllExchangesCrypto);
+
+router.put("/update/exchange/:uniqueExchagneId", UpdateExchanges);
 
 module.exports = router;

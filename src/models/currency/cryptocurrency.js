@@ -98,6 +98,7 @@ const Currency = new mongoose.Schema(
             "Industry",
             "Platform",
             "Self-Reported Tags",
+            "Others",
           ],
         },
         values: [String],

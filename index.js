@@ -1,7 +1,6 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
 const logger = require("./logger");
 
 const exchangeRoutes = require("./src/routes/exchangeRoutes");
@@ -13,9 +12,6 @@ const mainRoutes = require("./src/routes/pairRoutes/currencyPair");
 const currecnyRoutes = require("./src/routes/currencyRoutes/currency");
 
 const app = express();
-
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
 
 app.use(
   cors({
@@ -30,7 +26,7 @@ app.use(
       "http://localhost:3001",
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true, // Enable sending cookies from the client
+    credentials: true,
   })
 );
 
@@ -40,10 +36,10 @@ const MONGODB_URI =
   process.env.MONGODB_URI ||
   "mongodb://techAdmin:Siamaq%409@139.59.36.115:26018/ExchangeDB?authMechanism=DEFAULT&authSource=admin";
 
-app.use("/exchange", exchangeRoutes);
 app.use("/exchange", mainRoutes);
-app.use("/exchange", currecnyRoutes);
 app.use("/exchange", marketRoutes);
+app.use("/exchange", exchangeRoutes);
+app.use("/exchange", currecnyRoutes);
 
 async function startServer() {
   try {

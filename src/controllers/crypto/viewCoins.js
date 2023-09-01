@@ -84,7 +84,7 @@ const listCurrencyAdmin = async (req, res) => {
     const { price, circulatingSupply, symbol } = req.body;
 
     const getAllCoins = await currencyModel.find();
-    
+
     const getAllCoinsLength = getAllCoins.length;
 
     const newRank = getAllCoinsLength + 1;

@@ -228,7 +228,15 @@ const pairCurrency = new mongoose.Schema(
 
     listedExchanges: [
       {
-        type: String,
+        exchangeUrl: {
+          type: String,
+        },
+
+        apiUrl: {
+          type: String,
+        },
+
+        _id: false,
       },
     ],
 

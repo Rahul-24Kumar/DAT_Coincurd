@@ -20,7 +20,6 @@ let exchange = new mongoose.Schema(
 
     percentTotalVolume: {
       type: Number,
-      default: 0,
     },
 
     volume: {
@@ -29,7 +28,6 @@ let exchange = new mongoose.Schema(
 
     tradingPairs: {
       type: Number,
-      default: 0,
     },
 
     exchangeUrl: {
@@ -76,72 +74,58 @@ let exchange = new mongoose.Schema(
     socialLinks: {
       Website: {
         type: String,
-        default: null,
       },
 
       Explorer: {
         type: String,
-        default: null,
       },
 
       Facebook: {
         type: String,
-        default: null,
       },
 
       Twitter: {
         type: String,
-        default: null,
       },
 
       Reddit: {
         type: String,
-        default: null,
       },
 
       Telegram: {
         type: String,
-        default: null,
       },
 
       GitHub: {
         type: String,
-        default: null,
       },
 
       Discord: {
         type: String,
-        default: null,
       },
 
       Chat: {
         type: String,
-        default: null,
       },
 
       Message_Board: {
         type: String,
-        default: null,
       },
 
       Explorer1: {
         type: String,
-        default: null,
       },
 
       Explorer2: {
         type: String,
-        default: null,
       },
 
       Explorer3: {
         type: String,
-        default: null,
       },
 
       Explorer4: {
         type: String,
-        default: null,
       },
     },
 
