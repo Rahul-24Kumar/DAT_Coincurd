@@ -1,4 +1,5 @@
 const axios = require("axios");
+const cron = require("node-cron");
 const logger = require("../../../logger");
 const pairModel = require("../../models/pairModel/currencyPairs");
 
@@ -48,6 +49,7 @@ const HuobiPairDb = async (req, res) => {
         coinId: "polkadot",
         rank: 5,
         symbol: "DOT",
+        coinName: "Polkadot",
         uniqueCoinId: "DOT_5",
         uniqueExchangeId: "huobi_4",
         circulatingSupply: 1265884143.59824,
@@ -114,5 +116,52 @@ const HuobiPairDb = async (req, res) => {
     return res.status(500).send({ status: false, message: error.message });
   }
 };
+
+const updateHuobiPair = async () => {
+  try {
+    const documentsToUpdate = await pairModel.find({});
+
+    for (const document of documentsToUpdate) {
+      const symbol = document.symbol;
+      const uniqueExchangeId = document.uniqueExchangeId;
+
+      try {
+        const response = await axios.get(
+          `https://api.huobi.pro/market/detail?symbol=${symbol.toLowerCase()}usdt`
+        );
+
+        const responseData = response.data.tick;
+
+        if (symbol && uniqueExchangeId === "huobi_4") {
+          const updateData = {
+            price: parseFloat(responseData.close),
+            lowPrice: parseFloat(responseData.low),
+            highPrice: parseFloat(responseData.high),
+            openPrice: parseFloat(responseData.open),
+            volume: parseFloat(responseData.vol),
+            amout: parseFloat(responseData.amount),
+            tradeCount: parseFloat(responseData.count),
+          };
+
+          await pairModel.updateOne(
+            { _id: document._id },
+            { $set: updateData, upsert: true, new: true }
+          );
+
+          // logger.info(`Updated data for ${symbol}`);
+        }
+      } catch (error) {
+        // logger.error(`Error updating data for ${symbol}: ${error.message}`);
+      }
+    }
+  } catch (error) {
+    logger.error("Error updating Huobi data:", error.message);
+  }
+};
+
+cron.schedule("*/1 * * * *", async () => {
+  await updateHuobiPair();
+  // logger.info("Huobi Pair Updated");
+});
 
 module.exports = { HuobiPairDb };

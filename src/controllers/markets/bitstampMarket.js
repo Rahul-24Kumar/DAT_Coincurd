@@ -50,7 +50,7 @@ const BitstampMarketInDb = async (req, res) => {
 
 cron.schedule("*/30 * * * *", async () => {
   await BitstampMarketInDb();
-  logger.info("Bitstamp Market");
+  // logger.info("Bitstamp Market");
 });
 
 module.exports = { BitstampMarketInDb };

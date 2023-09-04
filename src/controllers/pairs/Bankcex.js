@@ -101,7 +101,7 @@ const BankcexPairDb = async (req, res) => {
           bankcexData[matchingDataIndex] = updatedData;
         }
       } catch (error) {
-        console.error(`Error fetching data for ${symbol}:`, error.message);
+        logger.error(`Error fetching data for ${symbol}:`, error.message);
       }
     }
 

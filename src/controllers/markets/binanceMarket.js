@@ -63,7 +63,7 @@ const BinanceMarketInDb = async (req, res) => {
 
 cron.schedule("*/30 * * * *", async () => {
   await BinanceMarketInDb();
-  logger.info(" Binance Saved");
+  // logger.info(" Binance Saved");
 });
 
 module.exports = { BinanceMarketInDb };

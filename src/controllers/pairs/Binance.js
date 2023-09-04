@@ -1,4 +1,5 @@
 const axios = require("axios");
+const cron = require("node-cron");
 const logger = require("../../../logger");
 const pairModel = require("../../models/pairModel/currencyPairs");
 
@@ -133,5 +134,68 @@ const BinancePairDb = async (req, res) => {
     return res.status(500).send({ status: false, message: error.message });
   }
 };
+
+const updateBinancePair = async (req, res) => {
+  try {
+    const documentsToUpdate = await pairModel.find({});
+
+    for (const document of documentsToUpdate) {
+      const symbol = document.symbol;
+      const uniqueExchangeId = document.uniqueExchangeId;
+
+      try {
+        const response = await axios.get(
+          `https://www.binance.com/api/v3/ticker/24hr?symbol=${symbol}USDT`
+        );
+
+        const responseData = response.data;
+
+        if (
+          symbol === responseData.symbol.replace("USDT", "") &&
+          uniqueExchangeId === "binance_1"
+        ) {
+          const updateData = {
+            price: parseFloat(responseData.lastPrice),
+            priceChange: parseFloat(responseData.priceChange),
+            changePercent24Hr: parseFloat(responseData.priceChangePercent),
+
+            weightedAvgPrice: parseFloat(responseData.weightedAvgPrice),
+            prevClosePrice: parseFloat(responseData.prevClosePrice),
+            volume: parseFloat(responseData.volume),
+
+            highPrice: parseFloat(responseData.highPrice),
+            lowPrice: parseFloat(responseData.lowPrice),
+            quoteVolume: parseFloat(responseData.quoteVolume),
+
+            openPrice: parseFloat(responseData.openPrice),
+            bidPrice: parseFloat(responseData.bidPrice),
+            askPrice: parseFloat(responseData.askPrice),
+
+            lastQty: parseFloat(responseData.lastQty),
+            bidQty: parseFloat(responseData.bidQty),
+            askQty: parseFloat(responseData.askQty),
+          };
+
+          await pairModel.updateOne(
+            { _id: document._id },
+            { $set: updateData, upsert: true, new: true }
+          );
+
+          // logger.info(`Updated data for ${symbol}`);
+        }
+      } catch (error) {
+        // logger.error(`Error updating data for ${symbol}: ${error.message}`);
+      }
+    }
+  } catch (error) {
+    logger.error(error.message);
+    return res.status(500).send({ status: false, message: error.message });
+  }
+};
+
+cron.schedule("*/1 * * * *", async () => {
+  await updateBinancePair();
+  // logger.info(" Binance Pair Updated");
+});
 
 module.exports = { BinancePairDb };

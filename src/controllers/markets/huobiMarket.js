@@ -54,7 +54,7 @@ const HuobiInDb = async (req, res) => {
 
 cron.schedule("*/30 * * * *", async () => {
   await HuobiInDb();
-  logger.info("Saved");
+  // logger.info("Saved");
 });
 
 module.exports = { HuobiInDb };

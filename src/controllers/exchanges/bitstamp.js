@@ -18,11 +18,10 @@ const BitstampInDb = async (req, res) => {
       result.forEach((element) => {
         if (element.pair.endsWith("/USDT")) {
           const symbolWithoutUSDT = element.pair.replace("/USDT", "");
-          const fullPairName = element.pair;
 
           bitstampApiData.push({
             symbol: symbolWithoutUSDT,
-            pairName: fullPairName,
+            pairName: element.pair,
 
             price: parseFloat(element.last),
             weightedAvgPrice: parseFloat(element.vwap),
@@ -34,7 +33,6 @@ const BitstampInDb = async (req, res) => {
             lowPrice: parseFloat(element.low),
             lastPrice: parseFloat(element.last),
             volume: parseFloat(element.volume),
-            
 
             exchangeId: "bitstamp",
             exchangeName: "Bitstamp",
@@ -54,7 +52,7 @@ const BitstampInDb = async (req, res) => {
 
 cron.schedule("*/30 * * * *", async () => {
   await BitstampInDb();
-  logger.info("Bitstamp Saved");
+  // logger.info("Bitstamp Saved");
 });
 
 module.exports = { BitstampInDb };

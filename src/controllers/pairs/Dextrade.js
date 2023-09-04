@@ -1,4 +1,5 @@
 const axios = require("axios");
+const cron = require("node-cron");
 const logger = require("../../../logger");
 const pairModel = require("../../models/pairModel/currencyPairs");
 
@@ -48,6 +49,7 @@ const DextradePairDb = async (req, res) => {
         coinId: "polkadot",
         rank: 5,
         symbol: "DOT",
+        coinName: "Polkadot",
         uniqueCoinId: "DOT_5",
         uniqueExchangeId: "dextrade_7",
         circulatingSupply: 1265884143.59824,
@@ -111,5 +113,53 @@ const DextradePairDb = async (req, res) => {
     return res.status(500).send({ status: false, message: error.message });
   }
 };
+
+const updateDextradePair = async () => {
+  try {
+    const documentsToUpdate = await pairModel.find({});
+
+    for (const document of documentsToUpdate) {
+      const symbol = document.symbol;
+      const uniqueExchangeId = document.uniqueExchangeId;
+
+      try {
+        const response = await axios.get(
+          `https://api.dex-trade.com/v1/public/ticker?pair=${symbol}USDT`
+        );
+
+        const responseData = response.data.data;
+
+        if (
+          symbol.toUpperCase() === responseData.pair.replace("USDT", "") &&
+          uniqueExchangeId === "dextrade_7"
+        ) {
+          const updateData = {
+            price: parseFloat(responseData.last),
+            lowPrice: parseFloat(responseData.low),
+            highPrice: parseFloat(responseData.high),
+            volume: parseFloat(responseData.volume_24H),
+            min_trade: parseFloat(responseData.min_trade),
+          };
+
+          await pairModel.updateOne(
+            { _id: document._id },
+            { $set: updateData, upsert: true, new: true }
+          );
+
+          // logger.info(`Updated data for ${symbol}`);
+        }
+      } catch (error) {
+        // logger.error(`Error updating data for ${symbol}: ${error.message}`);
+      }
+    }
+  } catch (error) {
+    logger.error("Error updating Dextrade data:", error.message);
+  }
+};
+
+cron.schedule("*/1 * * * *", async () => {
+  await updateDextradePair();
+  // logger.info("Dextrade Pair Updated");
+});
 
 module.exports = { DextradePairDb };

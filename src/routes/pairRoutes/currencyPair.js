@@ -21,7 +21,6 @@ const { bitstampPairDb } = require("../../controllers/pairs/bitstamp");
 const {
   addNewPair,
   getAllPairs,
-  UpdateCurrency,
   UpdateExchangePair,
 } = require("../../controllers/pairs/avgPrice");
 
@@ -46,8 +45,6 @@ router.get("/pair/data/dextrade", DextradePairDb);
 router.get("/pair/data/poloniex", poloniexPairDb);
 
 router.get("/pairs/:uniqueCoinId", getAllPairs);
-
-router.put("/currency/update/:coinId", UpdateCurrency);
 
 router.put(
   "/exchange/pair/update/:uniqueCoinId/:uniqueExchangeId",

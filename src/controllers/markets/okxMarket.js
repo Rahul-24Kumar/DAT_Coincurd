@@ -54,7 +54,7 @@ const OkxMarketInDb = async (req, res) => {
 
 cron.schedule("*/30 * * * *", async () => {
   await OkxMarketInDb();
-  logger.info("Saved");
+  // logger.info("Saved");
 });
 
 module.exports = { OkxMarketInDb };

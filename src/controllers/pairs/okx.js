@@ -1,4 +1,5 @@
 const axios = require("axios");
+const cron = require("node-cron");
 const logger = require("../../../logger");
 const pairModel = require("../../models/pairModel/currencyPairs");
 
@@ -48,6 +49,7 @@ const OkxPairDb = async (req, res) => {
         coinId: "polkadot",
         rank: 5,
         symbol: "DOT",
+        coinName: "Polkadot",
         uniqueCoinId: "DOT_5",
         uniqueExchangeId: "okx_6",
         circulatingSupply: 1265884143.59824,
@@ -109,5 +111,52 @@ const OkxPairDb = async (req, res) => {
     return res.status(500).send({ status: false, message: error.message });
   }
 };
+
+const updateOkxPair = async () => {
+  try {
+    const documentsToUpdate = await pairModel.find({});
+
+    for (const document of documentsToUpdate) {
+      const symbol = document.symbol;
+      const uniqueExchangeId = document.uniqueExchangeId;
+
+      try {
+        const response = await axios.get(
+          `https://www.okx.com/api/v5/market/index-tickers?instId=${symbol}-USDT`
+        );
+
+        const responseData = response.data.data[0];
+
+        if (
+          symbol.toUpperCase() === responseData.instId.replace("-USDT", "") &&
+          uniqueExchangeId === "okx_6"
+        ) {
+          const updateData = {
+            price: parseFloat(responseData.idxPx),
+            lowPrice: parseFloat(responseData.low24h),
+            highPrice: parseFloat(responseData.high24h),
+            openPrice: parseFloat(responseData.open24h),
+          };
+
+          await pairModel.updateOne(
+            { _id: document._id },
+            { $set: updateData, upsert: true, new: true }
+          );
+
+          // logger.info(`Updated data for ${symbol}`);
+        }
+      } catch (error) {
+        // logger.error(`Error updating data for ${symbol}: ${error.message}`);
+      }
+    }
+  } catch (error) {
+    logger.error("Error updating Okx data:", error.message);
+  }
+};
+
+cron.schedule("*/1 * * * *", async () => {
+  await updateOkxPair();
+  // logger.info("Okx Pair Updated");
+});
 
 module.exports = { OkxPairDb };

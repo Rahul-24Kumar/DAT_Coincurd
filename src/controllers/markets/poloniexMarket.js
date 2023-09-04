@@ -58,7 +58,7 @@ const PoloniexMarketInDb = async (req, res) => {
 
 cron.schedule("*/30 * * * *", async () => {
   await PoloniexMarketInDb();
-  logger.info("Saved");
+  // logger.info("Saved");
 });
 
 module.exports = { PoloniexMarketInDb };

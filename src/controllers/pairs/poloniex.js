@@ -1,4 +1,5 @@
 const axios = require("axios");
+const cron = require("node-cron");
 const logger = require("../../../logger");
 const pairModel = require("../../models/pairModel/currencyPairs");
 
@@ -48,6 +49,7 @@ const poloniexPairDb = async (req, res) => {
         coinId: "polkadot",
         rank: 5,
         symbol: "DOT",
+        coinName: "Polkadot",
         uniqueCoinId: "DOT_5",
         uniqueExchangeId: "poloniex_3",
         circulatingSupply: 1265884143.59824,
@@ -123,5 +125,63 @@ const poloniexPairDb = async (req, res) => {
     return res.status(500).send({ status: false, message: error.message });
   }
 };
+
+const updatePoloniexPair = async () => {
+  try {
+    const documentsToUpdate = await pairModel.find({});
+
+    for (const document of documentsToUpdate) {
+      const symbol = document.symbol;
+      const uniqueExchangeId = document.uniqueExchangeId;
+
+      try {
+        const response = await axios.get(
+          `https://api.poloniex.com/markets/${symbol}_USDT/ticker24h`
+        );
+
+        const responseData = response.data;
+
+        if (
+          symbol.toUpperCase() === responseData.symbol.replace("_USDT", "") &&
+          uniqueExchangeId === "poloniex_3"
+        ) {
+          const updateData = {
+            openPrice: parseFloat(responseData.open),
+            price: parseFloat(responseData.close),
+            lowPrice: parseFloat(responseData.low),
+            highPrice: parseFloat(responseData.high),
+            volume: parseFloat(responseData.quantity),
+            amount: parseFloat(responseData.amount),
+            tradeCount: parseFloat(responseData.tradeCount),
+            openTime: parseFloat(responseData.startTime),
+            closeTime: parseFloat(responseData.closeTime),
+            bidPrice: parseFloat(responseData.bid),
+            bidQty: parseFloat(responseData.bidQuantity),
+            askPrice: responseData.askPrice,
+            askQty: parseFloat(responseData.askQuantity),
+            time: parseFloat(responseData.ts),
+            markPrice: parseFloat(responseData.markPrice),
+          };
+
+          await pairModel.updateOne(
+            { _id: document._id },
+            { $set: updateData, upsert: true, new: true }
+          );
+
+          // logger.info(`Updated data for ${symbol}`);
+        }
+      } catch (error) {
+        // logger.error(`Error updating data for ${symbol}: ${error.message}`);
+      }
+    }
+  } catch (error) {
+    logger.error("Error updating Poloniex data:", error.message);
+  }
+};
+
+cron.schedule("*/1 * * * *", async () => {
+  await updatePoloniexPair();
+  // logger.info("Poloniex Pair Updated");
+});
 
 module.exports = { poloniexPairDb };

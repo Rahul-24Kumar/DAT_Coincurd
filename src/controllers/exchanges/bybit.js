@@ -54,7 +54,7 @@ const BybitInDb = async (req, res) => {
 
 cron.schedule("*/30 * * * *", async () => {
   await BybitInDb();
-  logger.info("Saved");
+  // logger.info("Saved");
 });
 
 module.exports = { BybitInDb };

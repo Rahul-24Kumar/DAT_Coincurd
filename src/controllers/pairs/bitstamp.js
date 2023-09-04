@@ -1,4 +1,5 @@
 const axios = require("axios");
+const cron = require("node-cron");
 const logger = require("../../../logger");
 const pairModel = require("../../models/pairModel/currencyPairs");
 
@@ -48,6 +49,7 @@ const bitstampPairDb = async (req, res) => {
         coinId: "polkadot",
         rank: 5,
         symbol: "DOT",
+        coinName: "Polkadot",
         uniqueCoinId: "DOT_5",
         uniqueExchangeId: "bitstamp_8",
         circulatingSupply: 1265884143.59824,
@@ -65,6 +67,7 @@ const bitstampPairDb = async (req, res) => {
     ];
 
     const coinPairName = bitstampData.map((e) => e.symbol);
+
     const coinSymbols = coinPairName.map((symbol) =>
       `${symbol}USDT`.toLowerCase()
     );
@@ -125,5 +128,56 @@ const bitstampPairDb = async (req, res) => {
     return res.status(500).send({ status: false, message: error.message });
   }
 };
+
+const updateBitstampPair = async () => {
+  try {
+    const documentsToUpdate = await pairModel.find({});
+
+    for (const document of documentsToUpdate) {
+      const symbol = document.symbol;
+      const uniqueExchangeId = document.uniqueExchangeId;
+
+      try {
+        const response = await axios.get(
+          `https://www.bitstamp.net/api/v2/ticker/${symbol.toLowerCase()}usdt`
+        );
+
+        const responseData = response.data;
+
+        if (symbol && uniqueExchangeId === "bitstamp_8") {
+          const updateData = {
+            price: parseFloat(responseData.last),
+            openPrice: parseFloat(responseData.open),
+            lowPrice: parseFloat(responseData.low),
+            highPrice: parseFloat(responseData.high),
+            volume: parseFloat(responseData.volume),
+            changePercent24Hr: parseFloat(responseData.percent_change_24),
+            bidPrice: parseFloat(responseData.bid),
+            askPrice: parseFloat(responseData.ask),
+            time: parseFloat(responseData.timestamp),
+            weightedAvgPrice: parseFloat(responseData.vwap),
+            openPrice_24hr: parseFloat(responseData.open_24),
+          };
+
+          await pairModel.updateOne(
+            { _id: document._id },
+            { $set: updateData, upsert: true, new: true }
+          );
+
+          // logger.info(`Updated data for ${symbol}`);
+        }
+      } catch (error) {
+        // logger.error(`Error updating data for ${symbol}: ${error.message}`);
+      }
+    }
+  } catch (error) {
+    logger.error("Error updating Bitstamp data:", error.message);
+  }
+};
+
+cron.schedule("*/1 * * * *", async () => {
+  await updateBitstampPair();
+  // logger.info("Bitstamp Pair Updated");
+});
 
 module.exports = { bitstampPairDb };

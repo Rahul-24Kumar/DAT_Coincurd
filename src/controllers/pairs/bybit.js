@@ -1,4 +1,5 @@
 const axios = require("axios");
+const cron = require("node-cron");
 const logger = require("../../../logger");
 const pairModel = require("../../models/pairModel/currencyPairs");
 
@@ -48,6 +49,7 @@ const bybitPairDb = async (req, res) => {
         coinId: "polkadot",
         rank: 5,
         symbol: "DOT",
+        coinName: "Polkadot",
         uniqueCoinId: "DOT_5",
         uniqueExchangeId: "bybit_2",
         circulatingSupply: 1265884143.59824,
@@ -117,5 +119,56 @@ const bybitPairDb = async (req, res) => {
     return res.status(500).send({ status: false, message: error.message });
   }
 };
+
+const updateBybitPair = async () => {
+  try {
+    const documentsToUpdate = await pairModel.find({});
+
+    for (const document of documentsToUpdate) {
+      const symbol = document.symbol;
+      const uniqueExchangeId = document.uniqueExchangeId;
+
+      try {
+        const response = await axios.get(
+          `https://api-testnet.bybit.com/spot/v3/public/quote/ticker/24hr?symbol=${symbol}USDT`
+        );
+
+        const responseData = response.data.result;
+
+        if (symbol && uniqueExchangeId === "bybit_2") {
+          const updateData = {
+            price: parseFloat(responseData.lp),
+            openPrice: parseFloat(responseData.o),
+            lowPrice: parseFloat(responseData.l),
+            highPrice: parseFloat(responseData.h),
+            volume: parseFloat(responseData.v),
+
+            bidPrice: parseFloat(responseData.bp),
+            askPrice: parseFloat(responseData.ap),
+            time: responseData.t,
+
+            quoteVolume: Number(responseData.qv),
+          };
+
+          await pairModel.updateOne(
+            { _id: document._id },
+            { $set: updateData, upsert: true, new: true }
+          );
+
+          // logger.info(`Updated data for ${symbol}`);
+        }
+      } catch (error) {
+        // logger.error(`Error updating data for ${symbol}: ${error.message}`);
+      }
+    }
+  } catch (error) {
+    logger.error("Error updating Bybit data:", error.message);
+  }
+};
+
+cron.schedule("*/1 * * * *", async () => {
+  await updateBybitPair();
+  // logger.info("Bybit Pair Updated");
+});
 
 module.exports = { bybitPairDb };

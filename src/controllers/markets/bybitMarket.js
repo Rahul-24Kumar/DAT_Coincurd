@@ -52,7 +52,7 @@ const BybitMarketInDb = async (req, res) => {
 
 cron.schedule("*/30 * * * *", async () => {
   await BybitMarketInDb();
-  logger.info("Bybit Market Saved");
+  // logger.info("Bybit Market Saved");
 });
 
 module.exports = { BybitMarketInDb };

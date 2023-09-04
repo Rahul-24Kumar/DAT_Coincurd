@@ -115,4 +115,267 @@ const getAllCoins = async (req, res) => {
   }
 };
 
-module.exports = { insertCurency, getAllCoins, listCurrencyAdmin };
+const UpdateCurrency = async (req, res) => {
+  try {
+    const { uniqueCoinId } = req.params;
+    const updateFields = req.body;
+
+  
+
+    let existingAsset = await currencyModel.findOne({ uniqueCoinId });
+
+    if (!existingAsset) {
+      return res.status(404).json({ status: false, message: "Not Found!" });
+    }
+
+    const updateNestedFields = (existingObj, updateObj) => {
+      for (const key in updateObj) {
+        if (updateObj.hasOwnProperty(key)) {
+          if (Array.isArray(updateObj[key])) {
+            // Handle arrays separately
+            if (!existingObj[key]) {
+              existingObj[key] = [];
+            }
+
+            // Check each item in the array for uniqueness and insert if not found
+            updateObj[key].forEach((item) => {
+              const existingItem = existingObj[key].find(
+                (existingItem) => existingItem === item
+              );
+              if (!existingItem) {
+                existingObj[key].push(item);
+              }
+            });
+          } else if (typeof updateObj[key] === "object") {
+            if (!existingObj[key]) {
+              existingObj[key] = {};
+            }
+            updateNestedFields(existingObj[key], updateObj[key]);
+          } else {
+            // For non-object and non-array fields, handle differently
+            if (key === "category") {
+              // Check if the key is "category"
+              if (existingObj[key] && existingObj[key] === updateObj[key]) {
+                // If the category matches, append to the "values" array
+                if (
+                  Array.isArray(existingObj["values"]) &&
+                  Array.isArray(updateObj["values"])
+                ) {
+                  existingObj["values"].push(...updateObj["values"]);
+                }
+              } else {
+                // If the category doesn't match, replace the entire object
+                existingObj[key] = updateObj[key];
+              }
+            } else {
+              // For other fields, simply update if different
+              if (existingObj[key] !== updateObj[key]) {
+                existingObj[key] = updateObj[key];
+              }
+            }
+          }
+        }
+      }
+    };
+
+    updateNestedFields(existingAsset, updateFields);
+
+    const updatedAssetDoc = await existingAsset.save();
+
+
+    return res.status(200).json({
+      status: true,
+      message: "Update successful",
+      data: updatedAssetDoc,
+    });
+  } catch (error) {
+   
+    return res.status(500).json({ status: false, message: error.message });
+  }
+};
+
+module.exports = {
+  insertCurency,
+  getAllCoins,
+  listCurrencyAdmin,
+  UpdateCurrency,
+};
+
+// const UpdateCurrency = async (req, res) => {
+//   try {
+//     const { uniqueCoinId } = req.params;
+//     const updateFields = req.body;
+
+
+//     let existingAsset = await currencyModel.findOne({ uniqueCoinId });
+
+//     if (!existingAsset) {
+//       return res.status(404).json({ status: false, message: "Not Found!" });
+//     }
+
+//     const updateNestedFields = (existingObj, updateObj) => {
+//       for (const key in updateObj) {
+//         if (updateObj.hasOwnProperty(key)) {
+//           if (Array.isArray(updateObj[key])) {
+//             existingObj[key] = updateObj[key];
+//           } else if (typeof updateObj[key] === "object") {
+//             if (!existingObj[key]) {
+//               existingObj[key] = {};
+//             }
+//             updateNestedFields(existingObj[key], updateObj[key]);
+//           } else {
+//             existingObj[key] = updateObj[key];
+//           }
+//         }
+//       }
+//     };
+
+//     updateNestedFields(existingAsset, updateFields);
+
+//     const updatedAssetDoc = await existingAsset.save();
+
+
+
+//     return res.status(200).json({
+//       status: true,
+//       message: "Update successful",
+//       data: updatedAssetDoc,
+//     });
+//   } catch (error) {
+
+//     return res.status(500).json({ status: false, message: error.message });
+//   }
+// };
+
+// const UpdateCurrency = async (req, res) => {
+//   try {
+//     const { uniqueCoinId } = req.params;
+//     const updateFields = req.body;
+
+
+//     let existingAsset = await currencyModel.findOne({ uniqueCoinId });
+
+//     if (!existingAsset) {
+//       return res.status(404).json({ status: false, message: "Not Found!" });
+//     }
+
+//     const updateNestedFields = (existingObj, updateObj) => {
+//       for (const key in updateObj) {
+//         if (updateObj.hasOwnProperty(key)) {
+//           if (Array.isArray(updateObj[key])) {
+//             // Handle arrays separately
+//             if (!existingObj[key]) {
+//               existingObj[key] = [];
+//             }
+
+//             // Check each item in the array for uniqueness and insert if not found
+//             updateObj[key].forEach((item) => {
+//               const existingItem = existingObj[key].find(
+//                 (existingItem) => existingItem === item
+//               );
+//               if (!existingItem) {
+//                 existingObj[key].push(item);
+//               }
+//             });
+//           } else if (typeof updateObj[key] === "object") {
+//             if (!existingObj[key]) {
+//               existingObj[key] = {};
+//             }
+//             updateNestedFields(existingObj[key], updateObj[key]);
+//           } else {
+//             // For non-object and non-array fields, simply update if different
+//             if (existingObj[key] !== updateObj[key]) {
+//               existingObj[key] = updateObj[key];
+//             }
+//           }
+//         }
+//       }
+//     };
+
+//     updateNestedFields(existingAsset, updateFields);
+
+//     const updatedAssetDoc = await existingAsset.save();
+
+
+//     return res.status(200).json({
+//       status: true,
+//       message: "Update successful",
+//       data: updatedAssetDoc,
+//     });
+//   } catch (error) {
+
+//     return res.status(500).json({ status: false, message: error.message });
+//   }
+// };
+
+// const UpdateCurrency = async (req, res) => {
+//   try {
+//     const { uniqueCoinId } = req.params;
+//     const updateFields = req.body;
+
+
+
+//     let existingAsset = await currencyModel.findOne({ uniqueCoinId });
+
+//     if (!existingAsset) {
+//       return res.status(404).json({ status: false, message: "Not Found!" });
+//     }
+
+//     const updateNestedFields = (existingObj, updateObj) => {
+//       for (const key in updateObj) {
+//         if (updateObj.hasOwnProperty(key)) {
+//           if (Array.isArray(updateObj[key])) {
+//             // Handle arrays separately
+//             if (!existingObj[key]) {
+//               existingObj[key] = [];
+//             }
+
+//             // Check each item in the array for uniqueness and insert if not found
+//             updateObj[key].forEach((item) => {
+//               const existingItem = existingObj[key].find(
+//                 (existingItem) => existingItem === item
+//               );
+//               if (!existingItem) {
+//                 existingObj[key].push(item);
+//               }
+//             });
+//           } else if (typeof updateObj[key] === "object") {
+//             if (!existingObj[key]) {
+//               existingObj[key] = {};
+//             }
+//             updateNestedFields(existingObj[key], updateObj[key]);
+//           } else {
+//             // For non-object and non-array fields, handle differently
+//             if (key === "values" && Array.isArray(existingObj[key])) {
+//               // Special handling for "values" array
+//               if (Array.isArray(updateObj[key])) {
+//                 // Append values if the key is "values" and both are arrays
+//                 existingObj[key].push(...updateObj[key]);
+//               }
+//             } else {
+//               // For other fields, simply update if different
+//               if (existingObj[key] !== updateObj[key]) {
+//                 existingObj[key] = updateObj[key];
+//               }
+//             }
+//           }
+//         }
+//       }
+//     };
+
+//     updateNestedFields(existingAsset, updateFields);
+
+//     const updatedAssetDoc = await existingAsset.save();
+
+
+
+//     return res.status(200).json({
+//       status: true,
+//       message: "Update successful",
+//       data: updatedAssetDoc,
+//     });
+//   } catch (error) {
+
+//     return res.status(500).json({ status: false, message: error.message });
+//   }
+// };

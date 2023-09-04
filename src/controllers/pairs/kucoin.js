@@ -1,4 +1,5 @@
 const axios = require("axios");
+const cron = require("node-cron");
 const logger = require("../../../logger");
 const pairModel = require("../../models/pairModel/currencyPairs");
 
@@ -48,6 +49,7 @@ const kucoinPairDb = async (req, res) => {
         coinId: "polkadot",
         rank: 5,
         symbol: "DOT",
+        coinName: "Polkadot",
         uniqueCoinId: "DOT_5",
         uniqueExchangeId: "kucoin_5",
         circulatingSupply: 1265884143.59824,
@@ -120,5 +122,58 @@ const kucoinPairDb = async (req, res) => {
     return res.status(500).send({ status: false, message: error.message });
   }
 };
+
+const updateKucoinPair = async () => {
+  try {
+    const documentsToUpdate = await pairModel.find({});
+
+    for (const document of documentsToUpdate) {
+      const symbol = document.symbol;
+      const uniqueExchangeId = document.uniqueExchangeId;
+
+      try {
+        const response = await axios.get(
+          `https://api.kucoin.com/api/v1/market/stats?symbol=${symbol}-USDT`
+        );
+
+        const responseData = response.data.data;
+
+        if (
+          symbol.toUpperCase() === responseData.symbol.replace("-USDT", "") &&
+          uniqueExchangeId === "kucoin_5"
+        ) {
+          const updateData = {
+            price: parseFloat(responseData.last),
+            priceChange: parseFloat(responseData.changePrice),
+            changePercent24Hr: parseFloat(responseData.changeRate),
+            weightedAvgPrice: parseFloat(responseData.averagePrice),
+            highPrice: parseFloat(responseData.high),
+            lowPrice: parseFloat(responseData.low),
+            volume: parseFloat(responseData.vol),
+            time: parseFloat(responseData.time),
+            buyPrice: parseFloat(responseData.buy),
+            sellPrice: parseFloat(responseData.sell),
+          };
+
+          await pairModel.updateOne(
+            { _id: document._id },
+            { $set: updateData, upsert: true, new: true }
+          );
+
+          // logger.info(`Updated data for ${symbol}`);
+        }
+      } catch (error) {
+        // logger.error(`Error updating data for ${symbol}: ${error.message}`);
+      }
+    }
+  } catch (error) {
+    logger.error("Error updating KuCoin data:", error.message);
+  }
+};
+
+cron.schedule("*/1 * * * *", async () => {
+  await updateKucoinPair();
+  // logger.info("Kucoin Pair Updated");
+});
 
 module.exports = { kucoinPairDb };

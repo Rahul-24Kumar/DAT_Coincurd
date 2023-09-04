@@ -61,7 +61,7 @@ const BankcexInDb = async (req, res) => {
 
 cron.schedule("*/30 * * * *", async () => {
   await BankcexInDb();
-  logger.info("Saved");
+  // logger.info("Saved");
 });
 
 module.exports = { BankcexInDb };

@@ -53,6 +53,7 @@ const exchangeData = [
     rank: "5",
     exchangeId: "kucoin",
     exchangeName: "Kucoin",
+    uniqueExchangeId: "kucoin_5",
     percentTotalVolume: "1.926628210141964726",
     volume: "174972439.0943541844626706",
     tradingPairs: "652",
@@ -108,7 +109,10 @@ const insertExchanges = async (req, res) => {
 
 const addNewExchanges = async (req, res) => {
   try {
-    const insertInDb = await exchangeModel.create({ ...req.body });
+    const insertInDb = await exchangeModel.create({
+      ...req.body,
+      type: req.body.type,
+    });
 
     return res.status(201).send({ message: "successful", data: insertInDb });
   } catch (error) {
@@ -125,20 +129,25 @@ const UpdateExchanges = async (req, res) => {
 
     if (!existingExchange) {
       return res.status(404).json({ status: false, message: "Not Found!" });
-    } else {
-      Object.entries(updateFields).forEach(([key, value]) => {
-        if (value !== undefined && value !== "") {
-          existingExchange[key] = value;
-        }
-      });
     }
 
-    const updatedAssetDoc = await existingExchange.save();
+    Object.keys(updateFields).forEach((key) => {
+      if (
+        existingExchange.hasOwnProperty(key) &&
+        updateFields[key] !== undefined &&
+        updateFields[key] !== null
+      ) {
+        existingExchange[key] = updateFields[key];
+      }
+    });
+
+    existingExchange.type = req.body.type;
+    const updatedExchangeDoc = await existingExchange.save();
 
     return res.status(200).json({
       status: true,
       message: "Update successful",
-      data: updatedAssetDoc,
+      data: updatedExchangeDoc,
     });
   } catch (error) {
     return res.status(500).json({ status: false, message: error.message });
@@ -154,4 +163,9 @@ const getAllExchanges = async (req, res) => {
   }
 };
 
-module.exports = { insertExchanges, addNewExchanges, getAllExchanges, UpdateExchanges };
+module.exports = {
+  insertExchanges,
+  addNewExchanges,
+  getAllExchanges,
+  UpdateExchanges,
+};
