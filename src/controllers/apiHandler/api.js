@@ -58,15 +58,3 @@ export async function getOkxApi() {
     "https://www.okx.com/api/v5/market/tickers?instType=SWAP";
   return callAPI(apiEndepoint);
 }
-
-// const poloniexApi = axios.get("https://api.poloniex.com/markets");
-// const huobiApi = axios.get("https://api.huobi.pro/market/tickers");
-// const bitstampApi = axios.get("https://www.bitstamp.net/api/v2/ticker/");
-// const binanceApi = axios.get("https://www.binance.com/api/v3/ticker/24hr");
-// const dexTradeApi = axios.get("https://api.dex-trade.com/v1/public/tickers");
-// const bybitApi = axios.get("https://api-testnet.bybit.com/v2/public/tickers");
-// const kucoinApi = axios.get("https://api.kucoin.com/api/v1/market/allTickers");
-
-// const okxApi = axios.get(
-//   "https://www.okx.com/api/v5/market/tickers?instType=SWAP"
-// );

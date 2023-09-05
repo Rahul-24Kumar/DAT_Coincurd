@@ -2446,10 +2446,3 @@ const data = [
     maxSupply: 60000000,
   },
 ];
-
-const InsertAllCurrencies = async (req, res) => {
-  try {
-  } catch (error) {
-    logger.error(err.message);
-  }
-};

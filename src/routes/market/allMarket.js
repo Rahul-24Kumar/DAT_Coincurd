@@ -15,6 +15,10 @@ const marketControllers = [
     controller: require("../../controllers/markets/okxMarket").OkxMarketInDb,
   },
   {
+    name: "kucoinMarket",
+    controller: require("../../controllers/markets/kucoinMarket").KucoinInDb,
+  },
+  {
     name: "bybitMarket",
     controller: require("../../controllers/markets/bybitMarket")
       .BybitMarketInDb,
@@ -34,6 +38,12 @@ const marketControllers = [
     controller: require("../../controllers/markets/bitstampMarket")
       .BitstampMarketInDb,
   },
+
+  {
+    name: "dextradeMarket",
+    controller: require("../../controllers/markets/dextradeMarket")
+      .dextradeInDb,
+  },
 ];
 
 marketControllers.forEach(({ name, controller }) => {
@@ -41,7 +51,6 @@ marketControllers.forEach(({ name, controller }) => {
 });
 
 router.get("/viewCrypto/market/:symbol", getCryptoMarket);
-
 
 router.get("/viewExchange/market/:exchangeId", getExchangeMarket);
 

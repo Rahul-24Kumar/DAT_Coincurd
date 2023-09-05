@@ -1,6 +1,6 @@
 const cron = require("node-cron");
 const logger = require("../../../logger");
-const currencyModel = require("../../models/currency/cryptocurrency");
+const currencyModel = require("../../models/currencyModel/cryptocurrency");
 const currencyPairs = require("../../models/pairModel/currencyPairs");
 
 

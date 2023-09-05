@@ -3,13 +3,15 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const logger = require("./logger");
 
-const exchangeRoutes = require("./src/routes/exchangeRoutes");
+const exchangeRoutes = require("./src/routes/exchange/exchanges");
 
 const marketRoutes = require("./src/routes/market/allMarket.js");
 
-const mainRoutes = require("./src/routes/pairRoutes/currencyPair");
+const pairRoutes = require("./src/routes/pair/cryptoPair");
 
-const currecnyRoutes = require("./src/routes/currencyRoutes/currency");
+const currecnyRoutes = require("./src/routes/currency/crypto");
+
+const historyRoutes = require("./src/routes/history/cryptoHistory");
 
 const app = express();
 
@@ -39,10 +41,11 @@ const MONGODB_URI =
   process.env.MONGODB_URI ||
   "mongodb://techAdmin:Siamaq%409@139.59.36.115:26018/ExchangeDB?authMechanism=DEFAULT&authSource=admin";
 
-app.use("/exchange", mainRoutes);
+app.use("/exchange", pairRoutes);
 app.use("/exchange", marketRoutes);
 app.use("/exchange", exchangeRoutes);
 app.use("/exchange", currecnyRoutes);
+app.use("/exchange", historyRoutes);
 
 async function startServer() {
   try {

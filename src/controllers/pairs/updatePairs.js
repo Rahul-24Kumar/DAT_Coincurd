@@ -5,7 +5,7 @@ const currencyPairs = require("../../models/pairModel/currencyPairs");
 
 const updateAutomatically = async () => {
   try {
-    const getAllPairs = await currencyPairs.find();
+    const getAllPairs = await currencyPairs.find({});
 
     const coinIdDataMap = new Map();
 
@@ -54,7 +54,7 @@ const updateAutomatically = async () => {
   }
 };
 
-cron.schedule("*/1 * * * *", async () => {
+cron.schedule("*/2 * * * *", async () => {
   logger.info("updating pairs");
   await updateAutomatically();
 });

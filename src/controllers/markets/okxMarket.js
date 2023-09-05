@@ -1,7 +1,7 @@
 const axios = require("axios");
 const cron = require("node-cron");
 const logger = require("../../../logger");
-const okxMarket = require("../../models/markets/okxMarket");
+const okxMarket = require("../../models/marketModel/okxMarket");
 
 const OkxMarketInDb = async (req, res) => {
   try {
@@ -23,20 +23,26 @@ const OkxMarketInDb = async (req, res) => {
         okxApiData.push({
           symbol: symbolWithoutPair,
           pairName: element.instId,
-          
+
           price: parseFloat(element.last),
-          lastQty: parseFloat(element.lastQty),
+
           bidPrice: parseFloat(element.bidPx),
-          bidQty: parseFloat(element.bidQty),
+
           askPrice: parseFloat(element.askPx),
-          askQty: parseFloat(element.askQty),
+
           openPrice: parseFloat(element.open24h),
           highPrice: parseFloat(element.high24h),
           lowPrice: parseFloat(element.low24h),
+
           lastPrice: parseFloat(element.last),
           volume: parseFloat(element.vol24h),
 
+          askQty: element.askQty,
+          lastQty: element.lastQty,
+          bidQty: element.bidQty,
+
           time: element.ts,
+
           exchangeId: "okx",
           exchangeName: "Okx",
           uniqueExchangeId: "okx_6",

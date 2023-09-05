@@ -1,4 +1,4 @@
-const exchangeModel = require("../../models/exchanges/AllExchanges");
+const exchangeModel = require("../../models/exchangeModel/AllExchanges");
 
 const exchangeData = [
   {

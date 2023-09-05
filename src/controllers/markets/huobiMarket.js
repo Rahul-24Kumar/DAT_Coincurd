@@ -1,7 +1,7 @@
 const axios = require("axios");
 const cron = require("node-cron");
 const logger = require("../../../logger");
-const huobiModel = require("../../models/markets/huobiMarket");
+const huobiModel = require("../../models/marketModel/huobiMarket");
 
 const HuobiInDb = async (req, res) => {
   try {

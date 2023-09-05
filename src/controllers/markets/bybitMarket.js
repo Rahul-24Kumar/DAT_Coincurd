@@ -1,7 +1,7 @@
 const axios = require("axios");
 const cron = require("node-cron");
 const logger = require("../../../logger");
-const bybitModel = require("../../models/markets/bybitMarket");
+const bybitModel = require("../../models/marketModel/bybitMarket");
 
 const BybitMarketInDb = async (req, res) => {
   try {

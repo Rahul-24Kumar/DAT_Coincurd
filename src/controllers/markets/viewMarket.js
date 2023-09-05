@@ -1,12 +1,12 @@
 const axios = require("axios");
 const cron = require("node-cron");
 const logger = require("../../../logger");
-const BinanceMarket = require("../../models/markets/binanceMarket");
-const BitstampMarket = require("../../models/markets/bitstampMarket");
-const BybitModel = require("../../models/markets/bybitMarket");
-const HuobiModel = require("../../models/markets/huobiMarket");
-const OkxMarket = require("../../models/markets/okxMarket");
-const PoloniexMarket = require("../../models/markets/poloniexMarket");
+const BinanceMarket = require("../../models/marketModel/binanceMarket");
+const BitstampMarket = require("../../models/marketModel/bitstampMarket");
+const BybitModel = require("../../models/marketModel/bybitMarket");
+const HuobiModel = require("../../models/marketModel/huobiMarket");
+const OkxMarket = require("../../models/marketModel/okxMarket");
+const PoloniexMarket = require("../../models/marketModel/poloniexMarket");
 
 const exchangeModels = {
   binance: BinanceMarket,

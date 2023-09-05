@@ -5,7 +5,7 @@ const {
   getAllCoins,
   listCurrencyAdmin,
   UpdateCurrency,
-} = require("../../controllers/crypto/viewCoins");
+} = require("../../controllers/currency/crypto");
 
 router.get("/viewAllCoins", getAllCoins);
 
