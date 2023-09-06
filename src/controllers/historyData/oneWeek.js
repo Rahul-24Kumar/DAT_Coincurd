@@ -7,7 +7,7 @@ const oneWeekData = async () => {
   try {
     const currencyData = await currencyModel.find({}).select({
       _id: 0,
-      _v: 0,
+      __v: 0,
       rank: 1,
       coinId: 1,
       uniqueCoinId: 1,
