@@ -1,9 +1,9 @@
 const cron = require("node-cron");
 const logger = require("../../../logger");
-const oneDayModel = require("../../models/historyModel/oneDay");
+const allDayDataModel = require("../../models/historyModel/allDayData");
 const currencyModel = require("../../models/currencyModel/cryptocurrency");
 
-const oneDayData = async () => {
+const allDayData = async () => {
   try {
     const currencyData = await currencyModel.find({}).select({
       rank: 1,
@@ -22,7 +22,7 @@ const oneDayData = async () => {
       // __v: 0,
     });
 
-    await oneDayModel.insertMany(currencyData);
+    await allDayDataModel.insertMany(currencyData);
 
     logger.info(`Inserted ${currencyData.length} documents into oneDayModel.`);
   } catch (error) {
@@ -30,9 +30,9 @@ const oneDayData = async () => {
   }
 };
 
-cron.schedule("*/1 * * * *", async () => {
-  await oneDayData();
-  logger.info("oneDay Data Saved");
+cron.schedule("*/60 * * * *", async () => {
+  await allDayData();
+  logger.info("all Day Data  Saved");
 });
 
-module.exports = { oneDayData };
+module.exports = { allDayData };

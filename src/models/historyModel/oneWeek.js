@@ -234,8 +234,8 @@ const oneWeekData = new mongoose.Schema(
 );
 
 oneWeekData.index(
-  { createdAt: 1 },
-  { expireAfterSeconds: 8 * 24 * 60 * 60 } // 8 days in seconds
+  { dbtime: 1 },
+  { expireAfterSeconds: 864000 } // 10 days in seconds
 );
 
 module.exports = mongoose.model("oneWeekData", oneWeekData);

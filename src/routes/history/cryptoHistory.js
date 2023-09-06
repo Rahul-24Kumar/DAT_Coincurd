@@ -10,6 +10,11 @@ const historyControllers = [
     name: "oneWeekData",
     controller: require("../../controllers/historyData/oneWeek").oneWeekData,
   },
+
+  {
+    name: "allDayData",
+    controller: require("../../controllers/historyData/allDayData").allDayData,
+  },
 ];
 
 historyControllers.forEach(({ name, controller }) => {

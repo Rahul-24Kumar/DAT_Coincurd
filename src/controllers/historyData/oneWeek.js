@@ -18,7 +18,6 @@ const oneWeekData = async () => {
       marketCap: 1,
       volume: 1,
       dbtime: 1,
-
       _id: 0,
       // __v: 0,
     });

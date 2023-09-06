@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const oneDayData = new mongoose.Schema(
+const allDayData = new mongoose.Schema(
   {
     rank: {
       type: Number,
@@ -232,12 +232,4 @@ const oneDayData = new mongoose.Schema(
   { timestamps: true }
 );
 
-oneDayData.index(
-  {
-    dbtime: 1,
-  },
-
-  { expireAfterSeconds: 259200 } // 3 day in seconds
-);
-
-module.exports = mongoose.model("oneDaydata", oneDayData);
+module.exports = mongoose.model("allDayData", allDayData);
