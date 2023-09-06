@@ -226,6 +226,10 @@ const allDayData = new mongoose.Schema(
 
     dbtime: {
       type: Date,
+    },
+
+    insertedDate: {
+      type: Date,
       default: Date.now,
     },
   },

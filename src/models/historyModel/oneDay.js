@@ -226,6 +226,10 @@ const oneDayData = new mongoose.Schema(
 
     dbtime: {
       type: Date,
+    },
+
+    insertedDate: {
+      type: Date,
       default: Date.now,
     },
   },
@@ -233,10 +237,7 @@ const oneDayData = new mongoose.Schema(
 );
 
 oneDayData.index(
-  {
-    dbtime: 1,
-  },
-
+  { insertedDate: 1 },
   { expireAfterSeconds: 259200 } // 3 day in seconds
 );
 

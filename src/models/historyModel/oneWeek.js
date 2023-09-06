@@ -227,6 +227,10 @@ const oneWeekData = new mongoose.Schema(
 
     dbtime: {
       type: Date,
+    },
+
+    insertedDate: {
+      type: Date,
       default: Date.now,
     },
   },
@@ -234,7 +238,7 @@ const oneWeekData = new mongoose.Schema(
 );
 
 oneWeekData.index(
-  { dbtime: 1 },
+  { insertedDate: 1 },
   { expireAfterSeconds: 864000 } // 10 days in seconds
 );
 
