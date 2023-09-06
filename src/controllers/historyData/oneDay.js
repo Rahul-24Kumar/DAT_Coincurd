@@ -30,7 +30,7 @@ const oneDayData = async () => {
   }
 };
 
-cron.schedule("*/1 * * * *", async () => {
+cron.schedule("*/5 * * * *", async () => {
   await oneDayData();
   logger.info("oneDay Data Saved");
 });
