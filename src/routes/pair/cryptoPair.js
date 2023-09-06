@@ -8,8 +8,6 @@ const { HuobiPairDb } = require("../../controllers/pairs/Huobi");
 
 const { kucoinPairDb } = require("../../controllers/pairs/kucoin");
 
-const { BankcexPairDb } = require("../../controllers/pairs/Bankcex");
-
 const { BinancePairDb } = require("../../controllers/pairs/Binance");
 
 const { poloniexPairDb } = require("../../controllers/pairs/poloniex");
@@ -33,8 +31,6 @@ router.get("/pair/data/bybit", bybitPairDb);
 router.get("/pair/data/huobi", HuobiPairDb);
 
 router.get("/pair/data/kucoin", kucoinPairDb);
-
-router.get("/pair/data/bankcex", BankcexPairDb);
 
 router.get("/pair/data/binance", BinancePairDb);
 

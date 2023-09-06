@@ -1,12 +1,19 @@
 const axios = require("axios");
 const cron = require("node-cron");
 const logger = require("../../../logger");
+
 const BinanceMarket = require("../../models/marketModel/binanceMarket");
 const BitstampMarket = require("../../models/marketModel/bitstampMarket");
+
 const BybitModel = require("../../models/marketModel/bybitMarket");
 const HuobiModel = require("../../models/marketModel/huobiMarket");
+
 const OkxMarket = require("../../models/marketModel/okxMarket");
 const PoloniexMarket = require("../../models/marketModel/poloniexMarket");
+
+const KucoinMarket = require("../../models/marketModel/kucoinMarket");
+
+const DextradeMarket = require("../../models/marketModel/dextradeMarket");
 
 const exchangeModels = {
   binance: BinanceMarket,
@@ -15,6 +22,8 @@ const exchangeModels = {
   huobi: HuobiModel,
   okx: OkxMarket,
   poloniex: PoloniexMarket,
+  kucoin: KucoinMarket,
+  dextrade: DextradeMarket,
 };
 
 const getExchangeMarket = async (req, res) => {
