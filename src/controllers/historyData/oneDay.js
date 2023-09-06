@@ -6,8 +6,6 @@ const currencyModel = require("../../models/currencyModel/cryptocurrency");
 const oneDayData = async () => {
   try {
     const currencyData = await currencyModel.find({}).select({
-      _id: 0,
-      __v: 0,
       rank: 1,
       coinId: 1,
       uniqueCoinId: 1,
@@ -20,6 +18,9 @@ const oneDayData = async () => {
       marketCap: 1,
       volume: 1,
       dbtime: 1,
+
+      _id: 0,
+      // __v: 0,
     });
 
     await oneDayModel.insertMany(currencyData);
