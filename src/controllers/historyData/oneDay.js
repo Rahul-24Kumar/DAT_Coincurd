@@ -5,7 +5,22 @@ const currencyModel = require("../../models/currencyModel/cryptocurrency");
 
 const oneDayData = async () => {
   try {
-    const currencyData = await currencyModel.find({});
+    const currencyData = await currencyModel.find({}).select({
+      _id: 0,
+      _v: 0,
+      rank: 1,
+      coinId: 1,
+      uniqueCoinId: 1,
+      symbol: 1,
+      coinName: 1,
+      maxSupply: 1,
+      circulatingSupply: 1,
+      price: 1,
+      totalSupply: 1,
+      marketCap: 1,
+      volume: 1,
+      dbtime: 1,
+    });
 
     await oneDayModel.insertMany(currencyData);
 
